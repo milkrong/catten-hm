@@ -1,0 +1,25 @@
+const task = {
+  management: 'Task management',
+  management_description: 'Manage your tasks here',
+  list_of_tasks: 'List of tasks',
+  fetch_error: 'Fetch task failed',
+  add_error: 'Add task failed',
+  update_error: 'Update task failed',
+  update_success: 'Update task success',
+  title: 'Task title',
+  description: 'Task description',
+  status: 'Task status',
+  due_date: 'Due date',
+  actions: 'Actions',
+  add: 'Add',
+  delete: 'Delete',
+  edit: 'Edit',
+  mark_pending: 'Mark as pending',
+  mark_in_progress: 'Mark as in progress',
+  mark_completed: 'Mark as completed',
+  pending: 'Pending',
+  in_progress: 'In progress',
+  completed: 'Completed',
+};
+
+export default task;
