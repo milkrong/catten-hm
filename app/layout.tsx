@@ -1,14 +1,10 @@
-import { GeistSans } from "geist/font/sans";
-import "./globals.css";
-
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+import { getLocaleOnServer } from '@/i18n/server';
+import './globals.css';
+import I18nServer from '@/components/I18NServer';
 
 export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: 'Home Management',
+  description: 'Home Management',
 };
 
 export default function RootLayout({
@@ -16,12 +12,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const locale = getLocaleOnServer();
   return (
-    <html lang="en" className={GeistSans.className}>
+    <html lang={locale ?? 'zh-CN'} className="h-full">
       <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col items-center">
-          {children}
-        </main>
+        <I18nServer>{children}</I18nServer>
       </body>
     </html>
   );
