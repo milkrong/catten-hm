@@ -82,9 +82,7 @@ export default function TaskListClient({
               <TableCell>{task.title}</TableCell>
               <TableCell>{task.description}</TableCell>
               <TableCell>{translations[task.status]}</TableCell>
-              <TableCell>
-                {new Date(task.due_date).toLocaleDateString()}
-              </TableCell>
+              <TableCell>{task.due_date}</TableCell>
               <TableCell>
                 <TaskActions
                   taskId={task.id}
