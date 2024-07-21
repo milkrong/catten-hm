@@ -8,8 +8,8 @@ export const NAV_MENU = [
     href: '/dashboard/inventory',
   },
   {
-    label: 'cost',
-    href: '/dashboard/cost',
+    label: 'expenses',
+    href: '/dashboard/expenses',
   },
   {
     label: 'task',

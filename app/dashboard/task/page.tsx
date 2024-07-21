@@ -21,7 +21,7 @@ export default async function TaskPage() {
   const { data: tasks, error } = await supabase
     .from('tasks')
     .select('*')
-    .order('due_date', { ascending: true });
+    .order('title', { ascending: false });
 
   if (error) {
     toast({
@@ -38,6 +38,7 @@ export default async function TaskPage() {
     updateError: t(`${I18N_PREFIX}.update_error`),
     updateSuccess: t(`${I18N_PREFIX}.update_success`),
     taskUpdated: t('task_updated'),
+    addTask: t('add'),
   };
 
   const translations = {
