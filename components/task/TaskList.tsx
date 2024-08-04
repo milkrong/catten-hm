@@ -13,15 +13,15 @@ import {
 } from '@/components/ui/table';
 import TaskActions from './TaskActions';
 import TaskForm from './TaskForm';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '../ui/drawer';
+
 import { Button } from '../ui/button';
-import { useTranslation } from 'react-i18next';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 
 interface Task {
   id: string;
@@ -60,7 +60,7 @@ export default function TaskListClient({
 }: TaskListClientProps) {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const supabase = createClient();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const refreshTasks = useCallback(async () => {
     const { data: refreshedTasks, error } = await supabase
@@ -75,24 +75,24 @@ export default function TaskListClient({
 
   return (
     <div>
-      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <DrawerTrigger asChild>
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogTrigger asChild>
           <Button>{buttonTranslations.addTask}</Button>
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>{buttonTranslations.addTask}</DrawerTitle>
-          </DrawerHeader>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{buttonTranslations.addTask}</DialogTitle>
+          </DialogHeader>
           <div className="p-4">
             <TaskForm
               onTaskAdded={() => {
                 refreshTasks();
-                setIsDrawerOpen(false);
+                setIsModalOpen(false);
               }}
             />
           </div>
-        </DrawerContent>
-      </Drawer>
+        </DialogContent>
+      </Dialog>
       <Table className="w-full h-full mt-4">
         <TableCaption>{translations.listOfTasks}</TableCaption>
         <TableHeader>
