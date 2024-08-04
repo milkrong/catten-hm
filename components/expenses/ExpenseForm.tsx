@@ -3,7 +3,6 @@
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,8 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { createClient } from '@/utils/supabase/client';
-import { useUserClient } from '@/hooks/user';
+
 import {
   Form,
   FormField,
@@ -31,6 +29,7 @@ import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '../ui/calendar';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import { Expense } from '@/models/expenses';
 
 const expenseFormSchema = z.object({
   description: z.string(),
@@ -46,33 +45,40 @@ const expenseFormSchema = z.object({
   platform: z.string(),
 });
 
-type ExpenseFormData = z.infer<typeof expenseFormSchema>;
+interface ExpenseFormProps {
+  onSubmit: (data: ExpenseFormData) => Promise<void>;
+  initialData?: Expense;
+  onCancel: () => void;
+}
 
-export default function ExpenseForm() {
-  const { userId } = useUserClient();
-  const supabase = createClient();
+export type ExpenseFormData = z.infer<typeof expenseFormSchema>;
+
+export default function ExpenseForm({
+  onSubmit,
+  initialData,
+  onCancel,
+}: ExpenseFormProps) {
   const { t } = useTranslation();
   const form = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseFormSchema),
-    defaultValues: {
-      description: '',
-      amount: 0,
-      category: 'food',
-      date: new Date(),
-      platform: '',
-    },
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          amount: Number(initialData?.amount),
+          date: new Date(initialData?.date),
+        }
+      : {
+          description: '',
+          amount: 0,
+          category: 'food',
+          date: new Date(),
+          platform: '',
+        },
   });
 
-  const onSubmit = async (data: ExpenseFormData) => {
-    const { error } = await supabase
-      .from('expenses')
-      .insert([{ ...data, user_id: userId }]);
-
-    if (error) {
-      console.error('Error adding expense:', error);
-    } else {
-      form.reset(); // Reset form to initial values after successful submission
-    }
+  const handleSubmit = async (data: ExpenseFormData) => {
+    await onSubmit(data);
+    form.reset();
   };
 
   return (
@@ -82,7 +88,10 @@ export default function ExpenseForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="description"
@@ -125,7 +134,10 @@ export default function ExpenseForm() {
                 <FormItem>
                   <FormLabel>{t('expenses.category')}</FormLabel>
                   <FormControl>
-                    <Select {...field}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder={t('expenses.category')} />
                       </SelectTrigger>
@@ -202,7 +214,14 @@ export default function ExpenseForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Add Expense</Button>
+            <div className="flex justify-end space-x-2">
+              <Button type="button" variant="outline" onClick={onCancel}>
+                Cancel
+              </Button>
+              <Button type="submit">
+                {initialData ? 'Update Expense' : 'Add Expense'}
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>

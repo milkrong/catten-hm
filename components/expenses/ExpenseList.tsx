@@ -1,7 +1,7 @@
 'use client';
 
 import { createClient } from '@/utils/supabase/client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -11,6 +11,10 @@ import {
   TableRow,
 } from '../ui/table';
 import { Expense } from '@/models/expenses';
+import { Button } from '../ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import ExpenseForm, { ExpenseFormData } from './ExpenseForm';
+import { useUserClient } from '@/hooks/user';
 
 export default function ExpenseList({
   initialExpenses,
@@ -26,53 +30,98 @@ export default function ExpenseList({
   };
 }) {
   const [expenses, setExpenses] = useState(initialExpenses);
-  // const supabase = createClient();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+  const { userId } = useUserClient();
+  const supabase = createClient();
 
-  // useEffect(() => {
-  //   const channel = supabase
-  //     .channel('expenses_realtime')
-  //     .on(
-  //       'postgres_changes',
-  //       { event: '*', schema: 'public', table: 'expenses' },
-  //       (payload) => {
-  //         if (payload.eventType === 'INSERT') {
-  //           setExpenses((prev) => [payload.new as Expense, ...prev]);
-  //         } else if (payload.eventType === 'DELETE') {
-  //           setExpenses((prev) =>
-  //             prev.filter((expense) => expense.id !== payload.old.id)
-  //           );
-  //         }
-  //       }
-  //     )
-  //     .subscribe();
+  const handleAddExpense = () => {
+    setEditingExpense(null);
+    setIsModalOpen(true);
+  };
 
-  //   return () => {
-  //     supabase.removeChannel(channel);
-  //   };
-  // }, [supabase]);
+  const handleEditExpense = (expense: Expense) => {
+    setEditingExpense(expense);
+    setIsModalOpen(true);
+  };
+
+  const handleSubmit = async (data: ExpenseFormData) => {
+    console.log(data, 'data');
+    const formattedData = {
+      ...data,
+      amount: data.amount,
+      date: data.date.toLocaleDateString(),
+    };
+    if (editingExpense) {
+      const { error } = await supabase
+        .from('expenses')
+        .update({ ...formattedData, user_id: userId })
+        .eq('id', editingExpense.id);
+
+      if (!error) {
+        setExpenses(
+          expenses.map((e) =>
+            e.id === editingExpense.id ? { ...e, ...formattedData } : e
+          )
+        );
+      }
+    } else {
+      const { data: newExpense, error } = await supabase
+        .from('expenses')
+        .insert([{ ...formattedData, user_id: userId }])
+        .select()
+        .single();
+
+      if (!error && newExpense) {
+        setExpenses([newExpense, ...expenses]);
+      }
+    }
+    setIsModalOpen(false);
+  };
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>{tableTitleTranslations.description}</TableHead>
-          <TableHead>{tableTitleTranslations.category}</TableHead>
-          <TableHead>{tableTitleTranslations.amount}</TableHead>
-          <TableHead>{tableTitleTranslations.platform}</TableHead>
-          <TableHead>{tableTitleTranslations.date}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {expenses.map((expense: Expense) => (
-          <TableRow key={expense.id}>
-            <TableCell>{expense.description}</TableCell>
-            <TableCell>{expense.category}</TableCell>
-            <TableCell>${expense.amount}</TableCell>
-            <TableCell>{expense.platform}</TableCell>
-            <TableCell>{expense.date}</TableCell>
+    <>
+      <Button onClick={handleAddExpense}>Add New Expense</Button>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>{tableTitleTranslations.description}</TableHead>
+            <TableHead>{tableTitleTranslations.category}</TableHead>
+            <TableHead>{tableTitleTranslations.amount}</TableHead>
+            <TableHead>{tableTitleTranslations.platform}</TableHead>
+            <TableHead>{tableTitleTranslations.date}</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {expenses.map((expense: Expense) => (
+            <TableRow key={expense.id}>
+              <TableCell>{expense.description}</TableCell>
+              <TableCell>{expense.category}</TableCell>
+              <TableCell>${expense.amount}</TableCell>
+              <TableCell>{expense.platform}</TableCell>
+              <TableCell>{expense.date}</TableCell>
+              <TableCell>
+                <Button onClick={() => handleEditExpense(expense)}>Edit</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {editingExpense ? 'Edit Expense' : 'Add New Expense'}
+            </DialogTitle>
+          </DialogHeader>
+          <ExpenseForm
+            onSubmit={handleSubmit}
+            initialData={editingExpense || undefined}
+            onCancel={() => setIsModalOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
