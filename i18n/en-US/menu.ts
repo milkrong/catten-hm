@@ -1,7 +1,7 @@
 const t = {
   maintenance: 'Maintenance',
   inventory: 'Inventory',
-  cost: 'Cost',
+  expenses: 'Expenses',
   task: 'Task',
   note: 'Note',
 };

@@ -13,6 +13,15 @@ import {
 } from '@/components/ui/table';
 import TaskActions from './TaskActions';
 import TaskForm from './TaskForm';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../ui/drawer';
+import { Button } from '../ui/button';
+import { useTranslation } from 'react-i18next';
 
 interface Task {
   id: string;
@@ -34,6 +43,7 @@ interface TaskListClientProps {
     [key: string]: string; // for status translations
   };
   buttonTranslations: {
+    addTask: string;
     markPending: string;
     markInProgress: string;
     markCompleted: string;
@@ -50,6 +60,7 @@ export default function TaskListClient({
 }: TaskListClientProps) {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const supabase = createClient();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const refreshTasks = useCallback(async () => {
     const { data: refreshedTasks, error } = await supabase
@@ -64,8 +75,25 @@ export default function TaskListClient({
 
   return (
     <div>
-      <TaskForm onTaskAdded={refreshTasks} />
-      <Table>
+      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerTrigger asChild>
+          <Button>{buttonTranslations.addTask}</Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>{buttonTranslations.addTask}</DrawerTitle>
+          </DrawerHeader>
+          <div className="p-4">
+            <TaskForm
+              onTaskAdded={() => {
+                refreshTasks();
+                setIsDrawerOpen(false);
+              }}
+            />
+          </div>
+        </DrawerContent>
+      </Drawer>
+      <Table className="w-full h-full mt-4">
         <TableCaption>{translations.listOfTasks}</TableCaption>
         <TableHeader>
           <TableRow>

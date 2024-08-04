@@ -8,6 +8,7 @@ const loadLangResources = (lang: string) => ({
   translation: {
     menu: require(`./${lang}/menu`).default,
     task: require(`./${lang}/task`).default,
+    expenses: require(`./${lang}/expenses`).default,
   },
 });
 
