@@ -30,9 +30,10 @@ import { Calendar } from '../ui/calendar';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { Expense } from '@/models/expenses';
+import { PLATFORM_LIST } from '@/constants/platform';
 
 const expenseFormSchema = z.object({
-  description: z.string(),
+  description: z.string().optional(),
   amount: z.number().min(0),
   category: z.enum([
     'food',
@@ -58,7 +59,8 @@ export default function ExpenseForm({
   initialData,
   onCancel,
 }: ExpenseFormProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLocale = i18n.language;
   const form = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseFormSchema),
     defaultValues: initialData
@@ -120,6 +122,7 @@ export default function ExpenseForm({
                       type="number"
                       placeholder={t('expenses.amount')}
                       {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
                       required
                     />
                   </FormControl>
@@ -142,15 +145,19 @@ export default function ExpenseForm({
                         <SelectValue placeholder={t('expenses.category')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="food">Food</SelectItem>
+                        <SelectItem value="food">
+                          {t('expenses.food')}
+                        </SelectItem>
                         <SelectItem value="transportation">
-                          Transportation
+                          {t('expenses.transportation')}
                         </SelectItem>
                         <SelectItem value="utilities">Utilities</SelectItem>
                         <SelectItem value="entertainment">
-                          Entertainment
+                          {t('expenses.entertainment')}
                         </SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="other">
+                          {t('expenses.other')}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -165,11 +172,21 @@ export default function ExpenseForm({
                 <FormItem>
                   <FormLabel>{t('expenses.platform')}</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder={t('expenses.platform')}
-                      {...field}
-                      required
-                    />
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={t('expenses.platform')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PLATFORM_LIST.map((platform) => (
+                          <SelectItem value={platform.value}>
+                            {platform[currentLocale as keyof typeof platform]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
