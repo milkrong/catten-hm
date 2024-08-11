@@ -10,6 +10,10 @@ const expenses = {
   category: 'Category',
   platform: 'Platform',
   pickDate: 'Pick a date',
+  food: 'Food',
+  transportation: 'Transportation',
+  entertainment: 'Entertainment',
+  other: 'Other',
 };
 
 export default expenses;

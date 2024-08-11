@@ -10,6 +10,10 @@ const expenses = {
   category: '分类',
   platform: '平台',
   pickDate: '选择日期',
+  food: '餐饮',
+  transportation: '交通',
+  entertainment: '娱乐',
+  other: '其他',
 };
 
 export default expenses;
