@@ -15,6 +15,7 @@ import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import ExpenseForm, { ExpenseFormData } from './ExpenseForm';
 import { useUserClient } from '@/hooks/user';
+import { useTranslation } from 'react-i18next';
 
 export default function ExpenseList({
   initialExpenses,
@@ -34,6 +35,7 @@ export default function ExpenseList({
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const { userId } = useUserClient();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   const handleAddExpense = () => {
     setEditingExpense(null);
@@ -43,6 +45,16 @@ export default function ExpenseList({
   const handleEditExpense = (expense: Expense) => {
     setEditingExpense(expense);
     setIsModalOpen(true);
+  };
+
+  const handleDeleteExpense = async (expense: Expense) => {
+    const { error } = await supabase
+      .from('expenses')
+      .delete()
+      .eq('id', expense.id);
+    if (!error) {
+      setExpenses(expenses.filter((e) => e.id !== expense.id));
+    }
   };
 
   const handleSubmit = async (data: ExpenseFormData) => {
@@ -90,7 +102,7 @@ export default function ExpenseList({
             <TableHead>{tableTitleTranslations.amount}</TableHead>
             <TableHead>{tableTitleTranslations.platform}</TableHead>
             <TableHead>{tableTitleTranslations.date}</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t('global.actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -102,7 +114,16 @@ export default function ExpenseList({
               <TableCell>{expense.platform}</TableCell>
               <TableCell>{expense.date}</TableCell>
               <TableCell>
-                <Button onClick={() => handleEditExpense(expense)}>Edit</Button>
+                <Button onClick={() => handleEditExpense(expense)}>
+                  {t('global.edit')}
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="ml-2"
+                  onClick={() => handleDeleteExpense(expense)}
+                >
+                  {t('global.delete')}
+                </Button>
               </TableCell>
             </TableRow>
           ))}

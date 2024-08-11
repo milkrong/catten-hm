@@ -35,3 +35,36 @@ export const PLATFORM_LIST = [
     value: 'SPDB',
   },
 ];
+
+export const CATEGORY_LIST = [
+  {
+    'en-US': 'Food',
+    'zh-CN': '餐饮',
+    value: 'food',
+  },
+  {
+    'en-US': 'Travel',
+    'zh-CN': '旅行',
+    value: 'travel',
+  },
+  {
+    'en-US': 'Entertainment',
+    'zh-CN': '娱乐',
+    value: 'entertainment',
+  },
+  {
+    'en-US': 'Shopping',
+    'zh-CN': '购物',
+    value: 'shopping',
+  },
+  {
+    'en-US': 'Transportation',
+    'zh-CN': '交通',
+    value: 'transportation',
+  },
+  {
+    'en-US': 'Other',
+    'zh-CN': '其他',
+    value: 'other',
+  },
+];

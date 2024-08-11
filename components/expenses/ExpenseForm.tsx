@@ -30,18 +30,14 @@ import { Calendar } from '../ui/calendar';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { Expense } from '@/models/expenses';
-import { PLATFORM_LIST } from '@/constants/platform';
+import { PLATFORM_LIST, CATEGORY_LIST } from '@/constants/expense';
 
 const expenseFormSchema = z.object({
   description: z.string().optional(),
   amount: z.number().min(0),
-  category: z.enum([
-    'food',
-    'transportation',
-    'utilities',
-    'entertainment',
-    'other',
-  ]),
+  category: z.enum(
+    CATEGORY_LIST.map((item) => item.value) as [string, ...string[]]
+  ),
   date: z.date(),
   platform: z.string(),
 });
@@ -145,19 +141,11 @@ export default function ExpenseForm({
                         <SelectValue placeholder={t('expenses.category')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="food">
-                          {t('expenses.food')}
-                        </SelectItem>
-                        <SelectItem value="transportation">
-                          {t('expenses.transportation')}
-                        </SelectItem>
-                        <SelectItem value="utilities">Utilities</SelectItem>
-                        <SelectItem value="entertainment">
-                          {t('expenses.entertainment')}
-                        </SelectItem>
-                        <SelectItem value="other">
-                          {t('expenses.other')}
-                        </SelectItem>
+                        {CATEGORY_LIST.map((item) => (
+                          <SelectItem value={item.value}>
+                            {item[currentLocale as keyof typeof item]}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -204,7 +192,7 @@ export default function ExpenseForm({
                         <Button
                           variant={'outline'}
                           className={cn(
-                            'w-[240px] pl-3 text-left font-normal block',
+                            'flex w-full min-w-0 items-center justify-between pl-3 text-left font-normal',
                             !field.value && 'text-muted-foreground'
                           )}
                         >
@@ -213,7 +201,7 @@ export default function ExpenseForm({
                           ) : (
                             <span>{t('expenses.pickDate')}</span>
                           )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          <CalendarIcon className="h-4 w-4 opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
