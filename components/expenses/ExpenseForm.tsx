@@ -66,11 +66,7 @@ export default function ExpenseForm({
           date: new Date(initialData?.date),
         }
       : {
-          description: '',
-          amount: 0,
-          category: 'food',
           date: new Date(),
-          platform: '',
         },
   });
 
