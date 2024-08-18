@@ -15,7 +15,7 @@ export default function RootLayout({
   const locale = getLocaleOnServer();
   return (
     <html lang={locale ?? 'zh-CN'} className="h-full">
-      <body className="bg-background text-foreground">
+      <body className="bg-background text-foreground h-full w-full">
         <I18nServer>{children}</I18nServer>
       </body>
     </html>
