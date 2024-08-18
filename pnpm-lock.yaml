@@ -14,6 +14,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.6.0
         version: 3.6.0(react-hook-form@7.52.0(react@18.2.0))
+      '@infisical/sdk':
+        specifier: ^2.3.1
+        version: 2.3.1
       '@radix-ui/react-checkbox':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -168,6 +171,82 @@ packages:
     resolution: {integrity: sha512-UBcpyOX3+RR+dNnqBd0lchXpoL8p4xC21XP8H6Meb8uve5Br1GCnmg0PcBoKKqPKgGu9GHQ/oygcmPrQhetwqw==}
     peerDependencies:
       react-hook-form: ^7.0.0
+
+  '@infisical/sdk-android-arm-eabi@2.3.1':
+    resolution: {integrity: sha512-Br+wZBtlcOwe3iY/LMpVIGxu4b9R+1K7vvuN5mU8tbreNTVDUfAq5f2B+0QR2XCaFazmowu/I3Ggg6/Eq/c+Aw==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [android]
+
+  '@infisical/sdk-android-arm64@2.3.1':
+    resolution: {integrity: sha512-hNbLu3NCWGG4ArBM+EMasW1hGqoOHwAn3SKZkfRb5QSnY17tFgZD4LQGnG1gP4/KEOxU0rcOM7qslCXmBiSMYA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [android]
+
+  '@infisical/sdk-darwin-arm64@2.3.1':
+    resolution: {integrity: sha512-8ulY///R8UA95GAS+i5AJPrYt31kcM48qegh/pj5zL4NB3oT80Hme1kc6lS6loWy69B+SW7u5QK6nlpl3HhJGw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@infisical/sdk-darwin-x64@2.3.1':
+    resolution: {integrity: sha512-2ekYpDrb6nzqfche7joPgBHBnKNj7OqBitgZCgogHRTf4IBmokFM6T4Z7BDvrs/qWgO3KBUyCtJMKGfrwMQscA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@infisical/sdk-linux-arm-gnueabihf@2.3.1':
+    resolution: {integrity: sha512-i0cnb8+N3VvgPlbrKRZgh/krSr9BizZn5t2DCOgjzugI4BPOWLqe80fytg1aWBCfkuztweTWvAO4QLjIaveNcQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [linux]
+
+  '@infisical/sdk-linux-arm64-gnu@2.3.1':
+    resolution: {integrity: sha512-6+GlUet4E4eKOJsD6wStLX4jXC0qHCmF5l1yucX3kUIWKyFrlLwA50ts2oeyJwY3RhewwjS+pGnX3TjytMleCg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@infisical/sdk-linux-arm64-musl@2.3.1':
+    resolution: {integrity: sha512-Qlrcu/0sMrLR0SHhwyDppPEWGDXJ4nYvSrtrMnF/UOVBsiBTpYKOv+kr7YbR/xX0+SH9o8rV+w5exNbW21ZL4g==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@infisical/sdk-linux-x64-gnu@2.3.1':
+    resolution: {integrity: sha512-GhxNh8n1f6sV3U/ZXrAeJLw1vhlVk48mzMypJ7v411JopA5BkOLpT63NlyhHZwo1i7Y/JP0Rxwz8iCIpnINpmQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@infisical/sdk-linux-x64-musl@2.3.1':
+    resolution: {integrity: sha512-Rgc4Mj/8oTPnBIqMJugOsDd3BChyAGyH9Q4SlvJUsusiYAra3V4tvVYYB4J8NOJNoLIAdM45N1LuM/naeG+sLQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@infisical/sdk-win32-arm64-msvc@2.3.1':
+    resolution: {integrity: sha512-Wf5ypgXsSOtvWwIpkj9VPyHFFr1SeF+tqeW+eevjayqtOVNS6Bs5kjHlCVTfutHsir0Dbo7L6xcWxN7M68mE/g==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@infisical/sdk-win32-ia32-msvc@2.3.1':
+    resolution: {integrity: sha512-b3NYTSF3pWA274uxhVfzGSZsQIsBvYZ1cyJ69x9ps5IBaw6LiPInCH/J7dooPQenDydklFIwJDogLRIt59E31Q==}
+    engines: {node: '>= 10'}
+    cpu: [ia32]
+    os: [win32]
+
+  '@infisical/sdk-win32-x64-msvc@2.3.1':
+    resolution: {integrity: sha512-Gu6qqiB342fUsyIrdhohhJCS5Ga2Bg7f3i+i0xlnPQ96kPLXyrKvlrT+GS2PBEWoAyiabB4gXMPZdcPe9EVoGg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@infisical/sdk@2.3.1':
+    resolution: {integrity: sha512-jyP9ecT3jKGaEsRXiH7VSsIgtt81F0yMgsSuQ3jhOSYz3uCupVlc2yvoOq0z063kMDQWtEKHp2rauaeSadjr7w==}
+    engines: {node: '>= 10'}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -1402,6 +1481,57 @@ snapshots:
   '@hookform/resolvers@3.6.0(react-hook-form@7.52.0(react@18.2.0))':
     dependencies:
       react-hook-form: 7.52.0(react@18.2.0)
+
+  '@infisical/sdk-android-arm-eabi@2.3.1':
+    optional: true
+
+  '@infisical/sdk-android-arm64@2.3.1':
+    optional: true
+
+  '@infisical/sdk-darwin-arm64@2.3.1':
+    optional: true
+
+  '@infisical/sdk-darwin-x64@2.3.1':
+    optional: true
+
+  '@infisical/sdk-linux-arm-gnueabihf@2.3.1':
+    optional: true
+
+  '@infisical/sdk-linux-arm64-gnu@2.3.1':
+    optional: true
+
+  '@infisical/sdk-linux-arm64-musl@2.3.1':
+    optional: true
+
+  '@infisical/sdk-linux-x64-gnu@2.3.1':
+    optional: true
+
+  '@infisical/sdk-linux-x64-musl@2.3.1':
+    optional: true
+
+  '@infisical/sdk-win32-arm64-msvc@2.3.1':
+    optional: true
+
+  '@infisical/sdk-win32-ia32-msvc@2.3.1':
+    optional: true
+
+  '@infisical/sdk-win32-x64-msvc@2.3.1':
+    optional: true
+
+  '@infisical/sdk@2.3.1':
+    optionalDependencies:
+      '@infisical/sdk-android-arm-eabi': 2.3.1
+      '@infisical/sdk-android-arm64': 2.3.1
+      '@infisical/sdk-darwin-arm64': 2.3.1
+      '@infisical/sdk-darwin-x64': 2.3.1
+      '@infisical/sdk-linux-arm-gnueabihf': 2.3.1
+      '@infisical/sdk-linux-arm64-gnu': 2.3.1
+      '@infisical/sdk-linux-arm64-musl': 2.3.1
+      '@infisical/sdk-linux-x64-gnu': 2.3.1
+      '@infisical/sdk-linux-x64-musl': 2.3.1
+      '@infisical/sdk-win32-arm64-msvc': 2.3.1
+      '@infisical/sdk-win32-ia32-msvc': 2.3.1
+      '@infisical/sdk-win32-x64-msvc': 2.3.1
 
   '@isaacs/cliui@8.0.2':
     dependencies:

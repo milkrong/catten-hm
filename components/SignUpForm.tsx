@@ -15,28 +15,36 @@ import {
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 
-export const authFormSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-});
+export type SignUpFormData = z.infer<typeof signUpFormSchema>;
 
-export function LoginForm({
+export const signUpFormSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(8),
+    confirmPassword: z.string().min(8),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
+
+export function SignUpForm({
   onSubmit,
 }: {
-  onSubmit: (values: z.infer<typeof authFormSchema>) => void;
+  onSubmit: (values: SignUpFormData) => void;
 }) {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof authFormSchema>>({
-    resolver: zodResolver(authFormSchema),
+  const form = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
-  const handleSubmit = (data: z.infer<typeof authFormSchema>) => {
+  const handleSubmit = (values: z.infer<typeof signUpFormSchema>) => {
     // Convert the form data to a plain object
-    const plainData = JSON.parse(JSON.stringify(data));
+    const plainData = JSON.parse(JSON.stringify(values));
     onSubmit(plainData);
   };
 
@@ -66,12 +74,32 @@ export function LoginForm({
               <FormControl>
                 <Input type="password" placeholder="password" {...field} />
               </FormControl>
-              <FormDescription>Enter your password.</FormDescription>
+              <FormDescription>
+                Enter your password (minimum 8 characters).
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Sign In with email</Button>
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="confirm password"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>Confirm your password.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Sign Up</Button>
       </form>
     </Form>
   );
